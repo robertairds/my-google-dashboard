@@ -1,20 +1,24 @@
-# 📊 Meu Dashboard de Dados - Vibe Coding
+# 📊 My Data Dashboard - Vibe Coding
 
-![Preview do Meu Dashboard](./dashboard-preview.png)
+This project was developed during the **Vibe Coding** sessions with [PrograMaria](https://www.programaria.org). The main goal is to build an interactive dashboard that consumes data from Google Sheets and displays dynamic visualizations.
 
-Este projeto foi desenvolvido durante as aulas de **Vibe Coding** da [PrograMaria](https://www.programaria.org). O objetivo é criar um dashboard interativo que consome dados de planilhas do Google e exibe visualizações dinâmicas.
+## 🚀 Live Demo
+You can check out the live project here: https://robertairds.github.io/my-google-dashboard/
 
-## 🚀 Demonstração
-Você pode acessar o projeto online aqui: https://robertairds.github.io/my-google-dashboard/
+## 📸 Preview
+![Dashboard Preview](./dashboard-preview.png)
 
-## 🛠️ Tecnologias Utilizadas
-* **HTML5 / CSS3** - Estrutura e estilização.
-* **JavaScript** - Lógica e consumo de APIs.
-* **Google Cloud Platform** - Autenticação OAuth 2.0.
-* **Google Sheets API** - Fonte de dados.
+## 🛠️ Technologies Used
+* **HTML5 / CSS3** - Structure and styling.
+* **JavaScript** - Logic and API consumption.
+* **Google Cloud Platform** - OAuth 2.0 Authentication.
+* **Google Sheets API** - Data source.
 
-## ⚙️ Como funciona
-O dashboard solicita login via conta Google e, após a permissão, lê os dados diretamente de uma planilha autorizada, gerando gráficos e tabelas automaticamente.
+## ⚙️ How it Works
+The dashboard requests a login via Google Account. Once authorized, it fetches data directly from a specific spreadsheet and generates charts and tables automatically using JavaScript.
+
+## 📚 About the Course
+This project is part of a "Vibe Coding" journey, focusing on practical learning, diverse representation in tech, and creative development.
 
 ---
-Feito com 💜 por Roberta Rodrigues durante a jornada PrograMaria.
+Built with 💜 by Roberta Rodrigues during the PrograMaria journey.
