@@ -1,5 +1,7 @@
 # 📊 Meu Dashboard de Dados - Vibe Coding
 
+![Preview do Meu Dashboard](./dashboard-preview.png)
+
 Este projeto foi desenvolvido durante as aulas de **Vibe Coding** da [PrograMaria](https://www.programaria.org). O objetivo é criar um dashboard interativo que consome dados de planilhas do Google e exibe visualizações dinâmicas.
 
 ## 🚀 Demonstração
