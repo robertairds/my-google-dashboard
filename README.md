@@ -6,6 +6,8 @@ This project was developed during the **Vibe Coding** sessions with [PrograMaria
 You can check out the live project here: https://robertairds.github.io/my-google-dashboard/
 
 ## 📸 Preview
+![Dashboard Preview](./dashboard-preview-login.png)
+
 ![Dashboard Preview](./dashboard-preview.png)
 
 ## 🛠️ Technologies Used
@@ -21,4 +23,4 @@ The dashboard requests a login via Google Account. Once authorized, it fetches d
 This project is part of a "Vibe Coding" journey, focusing on practical learning, diverse representation in tech, and creative development.
 
 ---
-Built with 💜 by Roberta Rodrigues during the PrograMaria journey.
+Built by Roberta Rodrigues during the PrograMaria journey.
