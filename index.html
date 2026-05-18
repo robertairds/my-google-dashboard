@@ -1,43 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dashboard de início de dia — saiba por onde começar assim que chegar no trabalho." />
+  <meta name="description"
+    content="Dashboard de início de dia — saiba por onde começar assim que chegar no trabalho." />
   <title>Por onde começo hoje? · Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://apis.google.com/js/api.js" async defer></script>
 
   <style>
     /* ════════════════════════════════════════════
        RESET & TOKENS
     ════════════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg-page:      #0b0907;
-      --bg-card:      #13100c;
-      --bg-card-h:    #1a1510;
-      --bg-surface:   #1c1710;
-      --border:       #2e2518;
-      --border-h:     #5a4420;
-      --gold:         #c9a84c;
-      --gold-light:   #e8c97a;
-      --gold-dim:     #6e5525;
-      --gold-glow:    rgba(201, 168, 76, 0.18);
-      --cream:        #e8dfc8;
-      --cream-dim:    #9a8f7a;
-      --cream-faint:  #4e4738;
-      --accent-mail:  #7b4fa6;   /* violet — correos */
-      --accent-meet:  #3a6b4a;   /* verde musgo — reuniões */
-      --accent-task:  #8b3a2a;   /* sépia — tarefas */
-      --radius:       6px;
-      --transition:   220ms ease;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html, body {
+    :root {
+      --bg-page: #0b0907;
+      --bg-card: #13100c;
+      --bg-card-h: #1a1510;
+      --bg-surface: #1c1710;
+      --border: #2e2518;
+      --border-h: #5a4420;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-dim: #6e5525;
+      --gold-glow: rgba(201, 168, 76, 0.18);
+      --cream: #e8dfc8;
+      --cream-dim: #9a8f7a;
+      --cream-faint: #4e4738;
+      --accent-mail: #7b4fa6;
+      /* violet — correos */
+      --accent-meet: #3a6b4a;
+      /* verde musgo — reuniões */
+      --accent-task: #8b3a2a;
+      /* sépia — tarefas */
+      --radius: 6px;
+      --transition: 220ms ease;
+    }
+
+    html,
+    body {
       min-height: 100%;
       background-color: var(--bg-page);
       color: var(--cream);
@@ -49,22 +65,30 @@
     /* ── Texture & vignette ── */
     body::before {
       content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
       background-image:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
+
     body::after {
       content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
       background: radial-gradient(ellipse 80% 65% at 50% 30%,
-        transparent 0%, rgba(5,3,2,.5) 65%, rgba(5,3,2,.92) 100%);
+          transparent 0%, rgba(5, 3, 2, .5) 65%, rgba(5, 3, 2, .92) 100%);
     }
 
     /* ════════════════════════════════════════════
        LAYOUT WRAPPER
     ════════════════════════════════════════════ */
     .page {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       min-height: 100vh;
       display: grid;
       grid-template-rows: auto 1fr auto;
@@ -101,22 +125,33 @@
       gap: 0;
       flex-shrink: 0;
     }
+
     .ci-flame {
-      width: 7px; height: 13px;
+      width: 7px;
+      height: 13px;
       background: radial-gradient(ellipse at 50% 80%,
-        #fff8d0 0%, #f9a825 45%, #e65100 85%, transparent 100%);
+          #fff8d0 0%, #f9a825 45%, #e65100 85%, transparent 100%);
       border-radius: 50% 50% 30% 30% / 60% 60% 30% 30%;
       animation: flicker 2s ease-in-out infinite alternate;
-      box-shadow: 0 0 8px 4px rgba(249,168,37,.4);
+      box-shadow: 0 0 8px 4px rgba(249, 168, 37, .4);
     }
-    .ci-wick  { width: 1px; height: 4px; background: #555; }
-    .ci-body  {
-      width: 9px; height: 22px;
+
+    .ci-wick {
+      width: 1px;
+      height: 4px;
+      background: #555;
+    }
+
+    .ci-body {
+      width: 9px;
+      height: 22px;
       background: linear-gradient(to bottom, #e8dfc8, #b0a07a);
       border-radius: 1px;
     }
-    .ci-base  {
-      width: 13px; height: 3px;
+
+    .ci-base {
+      width: 13px;
+      height: 3px;
       background: var(--gold-dim);
       border-radius: 2px;
     }
@@ -172,7 +207,7 @@
       font-weight: 400;
       color: var(--gold-light);
       line-height: 1.15;
-      text-shadow: 0 0 60px rgba(201,168,76,.3), 0 2px 12px rgba(0,0,0,.9);
+      text-shadow: 0 0 60px rgba(201, 168, 76, .3), 0 2px 12px rgba(0, 0, 0, .9);
       letter-spacing: 0.02em;
     }
 
@@ -182,12 +217,15 @@
       gap: 1rem;
       width: min(480px, 90%);
     }
-    .hero-rule::before, .hero-rule::after {
+
+    .hero-rule::before,
+    .hero-rule::after {
       content: '';
       flex: 1;
       height: 1px;
       background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
     }
+
     .hero-rule span {
       color: var(--gold);
       font-size: 1rem;
@@ -237,14 +275,19 @@
       background: var(--bg-card-h);
       border-color: var(--border-h);
       transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,0,0,.7), 0 0 0 1px var(--border-h);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .7), 0 0 0 1px var(--border-h);
     }
-    .card:hover::before { opacity: 1; }
+
+    .card:hover::before {
+      opacity: 1;
+    }
 
     /* top stripe */
     .card-stripe {
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       border-radius: var(--radius) var(--radius) 0 0;
       background: linear-gradient(to right, transparent, var(--accent-color), transparent);
@@ -254,7 +297,8 @@
     /* corner flourish */
     .card-flourish {
       position: absolute;
-      bottom: 10px; right: 14px;
+      bottom: 10px;
+      right: 14px;
       font-size: 0.65rem;
       color: var(--cream-faint);
       letter-spacing: 0.1em;
@@ -268,7 +312,8 @@
     }
 
     .card-icon {
-      width: 40px; height: 40px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 1px solid var(--border);
       display: flex;
@@ -279,6 +324,7 @@
       background: var(--bg-surface);
       transition: border-color var(--transition), background var(--transition);
     }
+
     .card:hover .card-icon {
       border-color: var(--accent-color);
     }
@@ -292,7 +338,7 @@
       padding: 2px 8px;
       border: 1px solid var(--border);
       border-radius: 20px;
-      background: rgba(0,0,0,.3);
+      background: rgba(0, 0, 0, .3);
     }
 
     .card-number {
@@ -330,15 +376,17 @@
     /* ── Card colour themes ── */
     .card--mail {
       --accent-color: #b08edd;
-      --accent-glow:  rgba(176, 142, 221, 0.2);
+      --accent-glow: rgba(176, 142, 221, 0.2);
     }
+
     .card--meet {
       --accent-color: #7ab892;
-      --accent-glow:  rgba(122, 184, 146, 0.2);
+      --accent-glow: rgba(122, 184, 146, 0.2);
     }
+
     .card--task {
       --accent-color: #d4836a;
-      --accent-glow:  rgba(212, 131, 106, 0.2);
+      --accent-glow: rgba(212, 131, 106, 0.2);
     }
 
     /* ════════════════════════════════════════════
@@ -374,15 +422,37 @@
        ANIMATIONS
     ════════════════════════════════════════════ */
     @keyframes riseIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes flicker {
-      0%   { transform: scaleX(1)    scaleY(1)    rotate(-1deg); opacity: 1; }
-      35%  { transform: scaleX(0.88) scaleY(1.08) rotate(1.5deg); opacity: .9; }
-      70%  { transform: scaleX(1.1)  scaleY(0.93) rotate(-2deg); opacity: .95; }
-      100% { transform: scaleX(0.94) scaleY(1.06) rotate(1deg);  opacity: .85; }
+      0% {
+        transform: scaleX(1) scaleY(1) rotate(-1deg);
+        opacity: 1;
+      }
+
+      35% {
+        transform: scaleX(0.88) scaleY(1.08) rotate(1.5deg);
+        opacity: .9;
+      }
+
+      70% {
+        transform: scaleX(1.1) scaleY(0.93) rotate(-2deg);
+        opacity: .95;
+      }
+
+      100% {
+        transform: scaleX(0.94) scaleY(1.06) rotate(1deg);
+        opacity: .85;
+      }
     }
 
     /* ════════════════════════════════════════════
@@ -398,16 +468,19 @@
       gap: 1rem;
       margin-bottom: 1.25rem;
     }
+
     .chart-heading-line {
       flex: 1;
       height: 1px;
       background: linear-gradient(to right, var(--border), transparent);
     }
+
     .chart-heading-text {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
     }
+
     .chart-title {
       font-family: 'Cinzel', serif;
       font-size: 0.82rem;
@@ -416,6 +489,7 @@
       color: var(--cream-dim);
       text-transform: uppercase;
     }
+
     .chart-subtitle {
       font-family: 'IM Fell English', serif;
       font-style: italic;
@@ -429,13 +503,16 @@
       border-radius: var(--radius);
       padding: 1.75rem 1.75rem 1.25rem;
       position: relative;
-      box-shadow: 0 8px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(201,168,76,.05);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(201, 168, 76, .05);
     }
+
     /* subtle top stripe like the stat cards */
     .chart-wrap::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       border-radius: var(--radius) var(--radius) 0 0;
       background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
@@ -454,6 +531,7 @@
       margin-top: 1rem;
       flex-wrap: wrap;
     }
+
     .legend-item {
       display: flex;
       align-items: center;
@@ -463,13 +541,22 @@
       font-size: 0.75rem;
       color: var(--cream-faint);
     }
+
     .legend-dot {
-      width: 8px; height: 8px;
+      width: 8px;
+      height: 8px;
       border-radius: 2px;
       flex-shrink: 0;
     }
-    .legend-dot--normal  { background: rgba(176, 142, 221, 0.55); }
-    .legend-dot--today   { background: #b08edd; box-shadow: 0 0 6px rgba(176,142,221,.7); }
+
+    .legend-dot--normal {
+      background: rgba(176, 142, 221, 0.55);
+    }
+
+    .legend-dot--today {
+      background: #b08edd;
+      box-shadow: 0 0 6px rgba(176, 142, 221, .7);
+    }
 
     /* ════════════════════════════════════════════
        AGENDA SECTION
@@ -484,16 +571,19 @@
       gap: 1rem;
       margin-bottom: 1.25rem;
     }
+
     .section-heading-line {
       flex: 1;
       height: 1px;
       background: linear-gradient(to right, var(--border), transparent);
     }
+
     .section-heading-text {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
     }
+
     .section-title {
       font-family: 'Cinzel', serif;
       font-size: 0.82rem;
@@ -502,6 +592,7 @@
       color: var(--cream-dim);
       text-transform: uppercase;
     }
+
     .section-subtitle {
       font-family: 'IM Fell English', serif;
       font-style: italic;
@@ -517,14 +608,17 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(201,168,76,.05);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(201, 168, 76, .05);
       position: relative;
     }
+
     /* top stripe */
     .agenda-list::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
       opacity: 0.6;
@@ -542,24 +636,32 @@
       transition: background var(--transition);
       cursor: default;
     }
+
     .agenda-item:last-child {
       border-bottom: none;
     }
+
     .agenda-item:hover {
       background: var(--bg-card-h);
     }
+
     /* left accent bar on hover */
     .agenda-item::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
       width: 2px;
       background: var(--agenda-accent, var(--gold-dim));
       opacity: 0;
       transition: opacity var(--transition);
       border-radius: 0 2px 2px 0;
     }
-    .agenda-item:hover::before { opacity: 1; }
+
+    .agenda-item:hover::before {
+      opacity: 1;
+    }
 
     /* time column */
     .agenda-time {
@@ -568,6 +670,7 @@
       align-items: flex-end;
       min-width: 52px;
     }
+
     .agenda-hour {
       font-family: 'Cinzel', serif;
       font-size: 1rem;
@@ -576,6 +679,7 @@
       letter-spacing: 0.04em;
       line-height: 1;
     }
+
     .agenda-duration {
       font-family: 'IM Fell English', serif;
       font-style: italic;
@@ -592,8 +696,10 @@
       gap: 0.85rem;
       min-width: 0;
     }
+
     .agenda-icon {
-      width: 34px; height: 34px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 1px solid var(--border);
       background: var(--bg-surface);
@@ -604,12 +710,15 @@
       flex-shrink: 0;
       transition: border-color var(--transition);
     }
+
     .agenda-item:hover .agenda-icon {
       border-color: var(--agenda-accent, var(--gold-dim));
     }
+
     .agenda-info {
       min-width: 0;
     }
+
     .agenda-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
@@ -619,6 +728,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .agenda-meta {
       font-family: 'IM Fell English', serif;
       font-style: italic;
@@ -636,31 +746,277 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 2px 9px;
-      background: rgba(0,0,0,.35);
+      background: rgba(0, 0, 0, .35);
       white-space: nowrap;
       flex-shrink: 0;
     }
 
     /* per-event accent colours */
-    .ev--meet  { --agenda-accent: #7ab892; }
-    .ev--focus { --agenda-accent: #d4836a; }
-    .ev--sync  { --agenda-accent: #b08edd; }
-    .ev--review{ --agenda-accent: #c9a84c; }
+    .ev--meet {
+      --agenda-accent: #7ab892;
+    }
+
+    .ev--focus {
+      --agenda-accent: #d4836a;
+    }
+
+    .ev--sync {
+      --agenda-accent: #b08edd;
+    }
+
+    .ev--review {
+      --agenda-accent: #c9a84c;
+    }
 
     /* ════════════════════════════════════════════
        RESPONSIVE TWEAKS
     ════════════════════════════════════════════ */
     @media (max-width: 500px) {
-      .topbar { flex-direction: column; align-items: flex-start; }
-      .card-number { font-size: 2.8rem; }
-      .agenda-item { grid-template-columns: auto 1fr; }
-      .agenda-tag  { display: none; }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card-number {
+        font-size: 2.8rem;
+      }
+
+      .agenda-item {
+        grid-template-columns: auto 1fr;
+      }
+
+      .agenda-tag {
+        display: none;
+      }
+    }
+
+    /* ════════════════════════════════════════════
+       LOGIN SCREEN
+    ════════════════════════════════════════════ */
+    .page--hidden {
+      display: none !important;
+    }
+
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-page);
+      gap: 1.8rem;
+      padding: 2rem;
+      animation: riseIn 0.9s ease both;
+    }
+
+    .login-screen::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    .login-screen::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 60% 50% at 50% 40%,
+          transparent 0%, rgba(5, 3, 2, .6) 60%, rgba(5, 3, 2, .95) 100%);
+    }
+
+    .login-screen.fade-out {
+      animation: loginFadeOut 0.6s ease forwards;
+    }
+
+    .login-candle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      transform: scale(2.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 400;
+      color: var(--gold-light);
+      text-shadow: 0 0 50px rgba(201, 168, 76, .35), 0 2px 10px rgba(0, 0, 0, .9);
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+
+    .login-sub {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--cream-dim);
+      text-align: center;
+      max-width: 340px;
+      line-height: 1.6;
+    }
+
+    .login-rule {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: min(300px, 80%);
+    }
+
+    .login-rule::before,
+    .login-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    }
+
+    .login-rule span {
+      color: var(--gold);
+      font-size: 0.9rem;
+    }
+
+    .login-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.8rem 2rem;
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      color: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-btn:hover:not(:disabled) {
+      background: var(--bg-card-h);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .6), 0 0 20px var(--gold-glow);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+
+    .login-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .login-footer {
+      position: absolute;
+      bottom: 2rem;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--cream-faint);
+      letter-spacing: 0.06em;
+    }
+
+    .login-loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: var(--cream-dim);
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+
+    .login-loading.visible {
+      display: flex;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes loginFadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
+      }
+    }
+
+    .login-error {
+      display: none;
+      color: #d4836a;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      text-align: center;
+      max-width: 340px;
+    }
+
+    .login-error.visible {
+      display: block;
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
+  <!-- ── LOGIN SCREEN ── -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-candle" aria-hidden="true">
+      <div class="ci-flame"></div>
+      <div class="ci-wick"></div>
+      <div class="ci-body"></div>
+      <div class="ci-base"></div>
+    </div>
+    <h1 class="login-brand">Morning Desk</h1>
+    <p class="login-sub">Seu ritual matinal começa aqui.<br>Conecte-se para ver seus emails e compromissos do dia.</p>
+    <div class="login-rule" aria-hidden="true"><span>✦</span></div>
+    <button id="login-btn" class="login-btn" disabled onclick="handleLogin()">
+      <svg viewBox="0 0 48 48">
+        <path fill="#EA4335"
+          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+        <path fill="#4285F4"
+          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+        <path fill="#FBBC05"
+          d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.9 7.35 2.56 10.54l7.97-5.95z" />
+        <path fill="#34A853"
+          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.95C6.51 42.62 14.62 48 24 48z" />
+      </svg>
+      Entrar com Google
+    </button>
+    <div id="login-loading" class="login-loading">
+      <div class="spinner"></div>
+      <span>Buscando seus dados…</span>
+    </div>
+    <p id="login-error" class="login-error"></p>
+    <p class="login-footer"><em>Omnia tempus habent</em> — Tudo tem o seu tempo</p>
+  </div>
+
+  <div class="page page--hidden" id="dashboard">
 
     <!-- ── TOP BAR ── -->
     <header class="topbar">
@@ -758,7 +1114,8 @@
 
         <div class="chart-wrap">
           <div class="chart-canvas-container">
-            <canvas id="emailVolumeChart" role="img" aria-label="Gráfico de barras com o volume de emails recebidos nos últimos 7 dias"></canvas>
+            <canvas id="emailVolumeChart" role="img"
+              aria-label="Gráfico de barras com o volume de emails recebidos nos últimos 7 dias"></canvas>
           </div>
           <div class="chart-legend" aria-hidden="true">
             <span class="legend-item"><span class="legend-dot legend-dot--normal"></span>Dias anteriores</span>
@@ -858,113 +1215,461 @@
 
   </div>
   <script>
+    /* ════════════════════════════════════════════
+       GOOGLE SIGN-IN + GMAIL & CALENDAR APIs
+    ════════════════════════════════════════════ */
     (function () {
-      const labels  = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Hoje'];
-      const data    = [12, 5, 8, 20, 3, 15, 9];
-      const todayIdx = data.length - 1;
+      'use strict';
 
-      /* ── Palette ── */
-      const C = {
-        barNormal   : 'rgba(176, 142, 221, 0.40)',
-        barNormalH  : 'rgba(176, 142, 221, 0.65)',
-        barToday    : 'rgba(176, 142, 221, 0.90)',
-        barTodayH   : 'rgba(232, 201, 122, 0.95)',
-        borderNormal: 'rgba(176, 142, 221, 0.70)',
-        borderToday : '#e8c97a',
-        gridLine    : 'rgba(110, 85, 37, 0.35)',
-        tickColor   : '#9a8f7a',
-        labelColor  : '#e8dfc8',
-        tooltipBg   : '#1a1510',
-        tooltipBorder:'#5a4420',
+      const CLIENT_ID = '293488159322-9347b842h3l6gkkklqs4qdi9f565lsbd.apps.googleusercontent.com';
+      const SCOPES = 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly';
+      const DISCOVERY_DOCS = [
+        'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest',
+        'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
+      ];
+
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      /* ── Wait for libraries to load ── */
+      function waitForGapi() {
+        return new Promise((resolve) => {
+          const check = setInterval(() => {
+            if (typeof gapi !== 'undefined') { clearInterval(check); resolve(); }
+          }, 100);
+        });
+      }
+      function waitForGis() {
+        return new Promise((resolve) => {
+          const check = setInterval(() => {
+            if (typeof google !== 'undefined' && google.accounts) { clearInterval(check); resolve(); }
+          }, 100);
+        });
+      }
+
+      /* ── Initialize GAPI ── */
+      async function initGapi() {
+        await waitForGapi();
+        await new Promise((resolve) => gapi.load('client', resolve));
+        await gapi.client.init({ discoveryDocs: DISCOVERY_DOCS });
+        gapiInited = true;
+        maybeEnableButton();
+      }
+
+      /* ── Initialize GIS Token Client ── */
+      async function initGis() {
+        await waitForGis();
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: handleAuthResponse,
+        });
+        gisInited = true;
+        maybeEnableButton();
+      }
+
+      function maybeEnableButton() {
+        if (gapiInited && gisInited) {
+          const btn = document.getElementById('login-btn');
+          btn.disabled = false;
+        }
+      }
+
+      /* ── Login handler (exposed globally) ── */
+      window.handleLogin = function () {
+        tokenClient.requestAccessToken({ prompt: '' });
       };
 
-      /* bar colors: today is highlighted in gold */
-      const bgColors     = data.map((_, i) => i === todayIdx ? C.barToday    : C.barNormal);
-      const borderColors = data.map((_, i) => i === todayIdx ? C.borderToday : C.borderNormal);
+      /* ── Auth callback ── */
+      async function handleAuthResponse(tokenResponse) {
+        if (tokenResponse.error) {
+          showError('Erro na autenticação: ' + tokenResponse.error);
+          return;
+        }
+        showLoading();
+        try {
+          const [gmailData, calendarData, volumeData] = await Promise.all([
+            fetchUnreadEmails(),
+            fetchTodayEvents(),
+            fetchEmailVolume(),
+          ]);
+          renderDashboard(gmailData, calendarData, volumeData);
+          transitionToDashboard();
+        } catch (err) {
+          console.error('Erro ao buscar dados:', err);
+          showError('Não foi possível carregar seus dados. Verifique as permissões e tente novamente.');
+        }
+      }
 
-      const ctx = document.getElementById('emailVolumeChart').getContext('2d');
+      /* ════════════════════════════════════════════
+         DATA FETCHERS
+      ════════════════════════════════════════════ */
 
-      /* subtle gradient fill */
-      const gradient = ctx.createLinearGradient(0, 0, 0, 260);
-      gradient.addColorStop(0,   'rgba(176, 142, 221, 0.80)');
-      gradient.addColorStop(1,   'rgba(176, 142, 221, 0.10)');
+      /* Unread email count (exact) + latest message timestamp */
+      async function fetchUnreadEmails() {
+        /* labels.get returns the EXACT unread count, not an estimate */
+        const labelResp = await gapi.client.gmail.users.labels.get({
+          userId: 'me',
+          id: 'INBOX',
+        });
+        const count = labelResp.result.messagesUnread || 0;
+        let lastReceivedAgo = null;
 
-      const gradientToday = ctx.createLinearGradient(0, 0, 0, 260);
-      gradientToday.addColorStop(0, 'rgba(232, 201, 122, 0.95)');
-      gradientToday.addColorStop(1, 'rgba(232, 201, 122, 0.15)');
+        /* Get latest unread message for the "last received" info */
+        const listResp = await gapi.client.gmail.users.messages.list({
+          userId: 'me',
+          q: 'is:unread',
+          maxResults: 1,
+        });
 
-      const bgGradients = data.map((_, i) => i === todayIdx ? gradientToday : gradient);
+        if (listResp.result.messages && listResp.result.messages.length > 0) {
+          const msgResp = await gapi.client.gmail.users.messages.get({
+            userId: 'me',
+            id: listResp.result.messages[0].id,
+            format: 'metadata',
+            metadataHeaders: ['Date'],
+          });
+          const internalDate = parseInt(msgResp.result.internalDate, 10);
+          const diffMs = Date.now() - internalDate;
+          const diffMin = Math.round(diffMs / 60000);
+          if (diffMin < 60) {
+            lastReceivedAgo = `Último recebido há ${diffMin} min.`;
+          } else if (diffMin < 1440) {
+            lastReceivedAgo = `Último recebido há ${Math.round(diffMin / 60)}h.`;
+          } else {
+            lastReceivedAgo = `Último recebido há ${Math.round(diffMin / 1440)} dia(s).`;
+          }
+        }
+        return { count, lastReceivedAgo };
+      }
 
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{
-            label            : 'Emails recebidos',
-            data,
-            backgroundColor  : bgGradients,
-            borderColor      : borderColors,
-            borderWidth      : 1.5,
-            borderRadius     : 4,
-            borderSkipped    : false,
-            hoverBackgroundColor: data.map((_, i) => i === todayIdx ? C.barTodayH : C.barNormalH),
-          }]
-        },
-        options: {
-          responsive       : true,
-          maintainAspectRatio: false,
-          animation: {
-            duration : 900,
-            easing   : 'easeOutQuart',
+      /* Today's calendar events */
+      async function fetchTodayEvents() {
+        const now = new Date();
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+        const resp = await gapi.client.calendar.events.list({
+          calendarId: 'primary',
+          timeMin: startOfDay.toISOString(),
+          timeMax: endOfDay.toISOString(),
+          singleEvents: true,
+          orderBy: 'startTime',
+          maxResults: 50,
+        });
+        return resp.result.items || [];
+      }
+
+      /* Email volume per day for last 7 days */
+      async function fetchEmailVolume() {
+        const now = new Date();
+        const days = [];
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+          days.push(d);
+        }
+
+        const results = await Promise.all(days.map(async (d) => {
+          const next = new Date(d);
+          next.setDate(d.getDate() + 1);
+          const after = `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
+          const before = `${next.getFullYear()}/${String(next.getMonth() + 1).padStart(2, '0')}/${String(next.getDate()).padStart(2, '0')}`;
+
+          const resp = await gapi.client.gmail.users.messages.list({
+            userId: 'me',
+            q: `after:${after} before:${before}`,
+            maxResults: 1,
+          });
+          return { date: d, count: resp.result.resultSizeEstimate || 0 };
+        }));
+        return results;
+      }
+
+      /* ════════════════════════════════════════════
+         RENDER DASHBOARD
+      ════════════════════════════════════════════ */
+
+      function renderDashboard(gmail, calendar, volume) {
+        /* ── Dynamic date ── */
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('pt-BR', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        });
+        const formattedDate = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        const topDate = document.querySelector('.topbar-date');
+        topDate.setAttribute('datetime', now.toISOString().slice(0, 10));
+        topDate.textContent = formattedDate;
+
+        /* ── Card: Emails ── */
+        const cardMail = document.getElementById('card-emails');
+        cardMail.querySelector('.card-number').textContent = gmail.count;
+        cardMail.querySelector('.card-number').setAttribute('aria-label', gmail.count + ' emails');
+        const mailDetail = gmail.lastReceivedAgo || 'Nenhum email não lido.';
+        cardMail.querySelector('.card-detail').innerHTML = mailDetail;
+
+        /* ── Card: Reuniões ── */
+        const cardMeet = document.getElementById('card-meetings');
+        const meetCount = calendar.length;
+        cardMeet.querySelector('.card-number').textContent = meetCount;
+        cardMeet.querySelector('.card-number').setAttribute('aria-label', meetCount + ' reuniões');
+
+        let meetDetail = 'Nenhum compromisso para hoje.';
+        if (meetCount > 0) {
+          const nextEvent = calendar.find(e => {
+            const start = new Date(e.start.dateTime || e.start.date);
+            return start >= now;
+          }) || calendar[0];
+          const nextTime = formatTime(nextEvent.start.dateTime || nextEvent.start.date);
+          const nextTitle = nextEvent.summary || 'Sem título';
+          const lastEvent = calendar[calendar.length - 1];
+          const lastEnd = formatTime(lastEvent.end.dateTime || lastEvent.end.date);
+          meetDetail = `Próxima às ${nextTime} — ${nextTitle}.<br>Último termina às ${lastEnd}.`;
+        }
+        cardMeet.querySelector('.card-detail').innerHTML = meetDetail;
+
+        /* ── Card: Tarefas (static placeholder) ── */
+        const cardTask = document.getElementById('card-tasks');
+        cardTask.querySelector('.card-number').textContent = '—';
+        cardTask.querySelector('.card-detail').innerHTML = 'Integração com Google Tasks em breve.';
+
+        /* ── Agenda ── */
+        renderAgenda(calendar);
+
+        /* ── Chart subtitle ── */
+        const chartSub = document.querySelector('.chart-subtitle');
+        if (chartSub) chartSub.textContent = 'Últimos 7 dias — volume real';
+
+        const agendaSub = document.querySelector('.section-subtitle');
+        if (agendaSub) {
+          const weekday = now.toLocaleDateString('pt-BR', { weekday: 'long' });
+          agendaSub.textContent = `Seus compromissos desta ${weekday}`;
+        }
+
+        /* ── Chart ── */
+        renderChart(volume);
+      }
+
+      function renderAgenda(events) {
+        const list = document.querySelector('.agenda-list');
+        list.innerHTML = '';
+
+        if (events.length === 0) {
+          list.innerHTML = `
+            <li class="agenda-item" style="justify-content: center; text-align: center; padding: 2.5rem;">
+              <div class="agenda-body" style="justify-content: center;">
+                <div class="agenda-info">
+                  <p class="agenda-title" style="white-space: normal;">Nenhum compromisso para hoje</p>
+                  <p class="agenda-meta">Aproveite o dia livre ✦</p>
+                </div>
+              </div>
+            </li>`;
+          return;
+        }
+
+        const accentClasses = ['ev--meet', 'ev--focus', 'ev--sync', 'ev--review'];
+        events.forEach((event, idx) => {
+          const startDt = event.start.dateTime || event.start.date;
+          const endDt = event.end.dateTime || event.end.date;
+          const isAllDay = !event.start.dateTime;
+          const hour = isAllDay ? 'Dia todo' : formatTime(startDt);
+          const duration = isAllDay ? '' : calcDuration(startDt, endDt);
+          const title = event.summary || 'Sem título';
+          const location = event.location || '';
+          const hangout = event.hangoutLink ? 'Google Meet' : '';
+          const meta = [hangout, location].filter(Boolean).join(' · ') || 'Evento';
+          const accent = accentClasses[idx % accentClasses.length];
+          const tag = detectTag(event);
+
+          const li = document.createElement('li');
+          li.className = `agenda-item ${accent}`;
+          li.innerHTML = `
+            <div class="agenda-time">
+              <span class="agenda-hour">${hour}</span>
+              ${duration ? `<span class="agenda-duration">${duration}</span>` : ''}
+            </div>
+            <div class="agenda-body">
+              <div class="agenda-icon" aria-hidden="true">📅</div>
+              <div class="agenda-info">
+                <p class="agenda-title">${escHtml(title)}</p>
+                <p class="agenda-meta">${escHtml(meta)}</p>
+              </div>
+            </div>
+            <span class="agenda-tag">${tag}</span>`;
+          list.appendChild(li);
+        });
+      }
+
+      function renderChart(volumeData) {
+        const labels = volumeData.map((d, i) => {
+          if (i === volumeData.length - 1) return 'Hoje';
+          return d.date.toLocaleDateString('pt-BR', { weekday: 'short' })
+            .replace('.', '').replace(/^\w/, c => c.toUpperCase());
+        });
+        const data = volumeData.map(d => d.count);
+        const todayIdx = data.length - 1;
+
+        const C = {
+          barNormal: 'rgba(176, 142, 221, 0.40)',
+          barNormalH: 'rgba(176, 142, 221, 0.65)',
+          barToday: 'rgba(176, 142, 221, 0.90)',
+          barTodayH: 'rgba(232, 201, 122, 0.95)',
+          borderNormal: 'rgba(176, 142, 221, 0.70)',
+          borderToday: '#e8c97a',
+          gridLine: 'rgba(110, 85, 37, 0.35)',
+          tickColor: '#9a8f7a',
+          tooltipBg: '#1a1510',
+          tooltipBorder: '#5a4420',
+        };
+
+        const borderColors = data.map((_, i) => i === todayIdx ? C.borderToday : C.borderNormal);
+        const ctx = document.getElementById('emailVolumeChart').getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+        gradient.addColorStop(0, 'rgba(176, 142, 221, 0.80)');
+        gradient.addColorStop(1, 'rgba(176, 142, 221, 0.10)');
+
+        const gradientToday = ctx.createLinearGradient(0, 0, 0, 260);
+        gradientToday.addColorStop(0, 'rgba(232, 201, 122, 0.95)');
+        gradientToday.addColorStop(1, 'rgba(232, 201, 122, 0.15)');
+
+        const bgGradients = data.map((_, i) => i === todayIdx ? gradientToday : gradient);
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Emails recebidos',
+              data,
+              backgroundColor: bgGradients,
+              borderColor: borderColors,
+              borderWidth: 1.5,
+              borderRadius: 4,
+              borderSkipped: false,
+              hoverBackgroundColor: data.map((_, i) => i === todayIdx ? C.barTodayH : C.barNormalH),
+            }]
           },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor  : C.tooltipBg,
-              borderColor      : C.tooltipBorder,
-              borderWidth      : 1,
-              titleColor       : '#e8c97a',
-              bodyColor        : '#9a8f7a',
-              titleFont        : { family: "'Cinzel', serif", size: 11, weight: '600' },
-              bodyFont         : { family: "'Cormorant Garamond', serif", size: 13 },
-              padding          : 12,
-              cornerRadius     : 4,
-              displayColors    : false,
-              callbacks: {
-                title : (items) => items[0].label,
-                label : (item)  => `  ${item.raw} emails recebidos`,
-              }
-            }
-          },
-          scales: {
-            x: {
-              grid  : { display: false },
-              border: { display: false },
-              ticks : {
-                color     : C.tickColor,
-                font      : { family: "'Cinzel', serif", size: 10, weight: '600' },
-                letterSpacing: '0.1em',
-                callback  : function(val, idx) {
-                  return idx === todayIdx ? '✦ ' + this.getLabelForValue(val) : this.getLabelForValue(val);
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 900, easing: 'easeOutQuart' },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: C.tooltipBg,
+                borderColor: C.tooltipBorder,
+                borderWidth: 1,
+                titleColor: '#e8c97a',
+                bodyColor: '#9a8f7a',
+                titleFont: { family: "'Cinzel', serif", size: 11, weight: '600' },
+                bodyFont: { family: "'Cormorant Garamond', serif", size: 13 },
+                padding: 12,
+                cornerRadius: 4,
+                displayColors: false,
+                callbacks: {
+                  title: (items) => items[0].label,
+                  label: (item) => `  ${item.raw} emails recebidos`,
                 }
               }
             },
-            y: {
-              grid  : { color: C.gridLine, lineWidth: 1 },
-              border: { display: false, dash: [4, 4] },
-              ticks : {
-                color    : C.tickColor,
-                font     : { family: "'Cormorant Garamond', serif", size: 12 },
-                maxTicksLimit: 6,
-                padding  : 8,
-                callback : (val) => val,
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: {
+                  color: C.tickColor,
+                  font: { family: "'Cinzel', serif", size: 10, weight: '600' },
+                  callback: function (val, idx) {
+                    return idx === todayIdx ? '✦ ' + this.getLabelForValue(val) : this.getLabelForValue(val);
+                  }
+                }
               },
-              beginAtZero: true,
+              y: {
+                grid: { color: C.gridLine, lineWidth: 1 },
+                border: { display: false, dash: [4, 4] },
+                ticks: {
+                  color: C.tickColor,
+                  font: { family: "'Cormorant Garamond', serif", size: 12 },
+                  maxTicksLimit: 6,
+                  padding: 8,
+                  callback: (val) => val,
+                },
+                beginAtZero: true,
+              }
             }
           }
-        }
-      });
+        });
+      }
+
+      /* ════════════════════════════════════════════
+         HELPERS
+      ════════════════════════════════════════════ */
+
+      function formatTime(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      }
+
+      function calcDuration(startStr, endStr) {
+        const diffMs = new Date(endStr) - new Date(startStr);
+        const mins = Math.round(diffMs / 60000);
+        if (mins < 60) return `${mins} min`;
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return m > 0 ? `${h}h${m}` : `${h}h`;
+      }
+
+      function detectTag(event) {
+        const summary = (event.summary || '').toLowerCase();
+        if (summary.includes('daily') || summary.includes('stand')) return 'Daily';
+        if (summary.includes('review') || summary.includes('revisão')) return 'Review';
+        if (summary.includes('sync') || summary.includes('alinhamento')) return 'Sync';
+        if (summary.includes('foco') || summary.includes('focus')) return 'Foco';
+        if (summary.includes('1:1') || summary.includes('one on one')) return '1:1';
+        if (event.hangoutLink) return 'Reunião';
+        return 'Evento';
+      }
+
+      function escHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      /* ════════════════════════════════════════════
+         UI TRANSITIONS
+      ════════════════════════════════════════════ */
+
+      function showLoading() {
+        document.getElementById('login-btn').style.display = 'none';
+        document.getElementById('login-loading').classList.add('visible');
+        document.getElementById('login-error').classList.remove('visible');
+      }
+
+      function showError(msg) {
+        document.getElementById('login-btn').style.display = 'flex';
+        document.getElementById('login-loading').classList.remove('visible');
+        const errEl = document.getElementById('login-error');
+        errEl.textContent = msg;
+        errEl.classList.add('visible');
+      }
+
+      function transitionToDashboard() {
+        const loginScreen = document.getElementById('login-screen');
+        const dashboard = document.getElementById('dashboard');
+        loginScreen.classList.add('fade-out');
+        setTimeout(() => {
+          loginScreen.style.display = 'none';
+          dashboard.classList.remove('page--hidden');
+        }, 550);
+      }
+
+      /* ── Bootstrap ── */
+      initGapi();
+      initGis();
     })();
   </script>
 </body>
+
 </html>
