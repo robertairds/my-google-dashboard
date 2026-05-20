@@ -5,6 +5,9 @@ This project was developed during the **Vibe Coding** sessions with [PrograMaria
 ## 🚀 Live Demo
 You can check out the live project here: https://robertairds.github.io/my-google-dashboard/
 
+## 📌 Notes
+- The dashboard was designed for educational and portfolio purposes.
+
 ## 📸 Preview
 ![Dashboard Preview](./dashboard-preview-login.png)
 
